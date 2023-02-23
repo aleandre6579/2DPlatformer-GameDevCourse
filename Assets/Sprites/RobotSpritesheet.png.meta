@@ -67,12 +67,12 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    textureCompression: 2
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
@@ -913,9 +913,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RobotSpritesheet_5: -1151377067
       RobotSpritesheet_35: -138984735
-      RobotSpritesheet_19: 981041382
       RobotSpritesheet_8: -664446186
       RobotSpritesheet_14: -877136379
       RobotSpritesheet_22: -1640140880
@@ -924,6 +922,7 @@ TextureImporter:
       RobotSpritesheet_9: -2031635739
       RobotSpritesheet_32: -602659099
       RobotSpritesheet_24: -1940830411
+      RobotSpritesheet_0: -1352223338
       RobotSpritesheet_31: -146762259
       RobotSpritesheet_26: -463420546
       RobotSpritesheet_13: 278408586
@@ -933,6 +932,7 @@ TextureImporter:
       RobotSpritesheet_36: 1145109170
       RobotSpritesheet_17: 701702265
       RobotSpritesheet_33: -251487211
+      RobotSpritesheet_3: -442881241
       RobotSpritesheet_30: -187699689
       RobotSpritesheet_10: -338327925
       RobotSpritesheet_29: -853975626
@@ -949,8 +949,8 @@ TextureImporter:
       RobotSpritesheet_25: 1302250474
       RobotSpritesheet_12: -824158174
       RobotSpritesheet_7: 727866082
-      RobotSpritesheet_0: -1352223338
-      RobotSpritesheet_3: -442881241
+      RobotSpritesheet_19: 981041382
+      RobotSpritesheet_5: -1151377067
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -17,16 +17,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSpeed;
     [SerializeField] private float linearDrag;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float landForce;
 
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
 
     // Booleans
     [SerializeField] private bool isGrounded;
+    private bool prevGrounded;
+    [SerializeField] private bool isWallSliding;
 
     // Checks
     [SerializeField] private Transform groundCheckPoint;
-    [SerializeField] private float groundCheckRadius;
+    [SerializeField] private Transform leftWallCheckPoint;
+    [SerializeField] private Transform rightWallCheckPoint;
+    [SerializeField] private float checkRadius;
     [SerializeField] private LayerMask groundLayer;
 
     // Inputs
@@ -39,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
     // Animation
     private Animator playerAnim;
+
+    // Particles
+    [SerializeField] private GameObject dashEffect;
 
     private void OnEnable()
     {
@@ -74,12 +82,60 @@ public class PlayerMovement : MonoBehaviour
         CheckGrounded();
     }
 
+    public float drag = 1f;
+    public float sideDragFactor = 0.1f;
+    public float acceleration = 10.0f;
+    private void FixedUpdate()
+    {
+        float force_x = -drag * transform.InverseTransformDirection(rb.velocity).x;
+        float force_y = -drag / sideDragFactor * rb.velocity.y;
+        rb.AddRelativeForce(new Vector2(force_x, force_y));
+ //       if (Input.GetButton("Fire1")) {
+ //           rb.AddRelativeForce(new Vector2(rb.mass * acceleration, rb.mass * acceleration));
+ //       }
+    }
+
     private void CheckGrounded()
     {
-        if (Physics2D.OverlapCircle(new Vector2(groundCheckPoint.position.x, groundCheckPoint.position.y), groundCheckRadius, groundLayer))
+        prevGrounded = isGrounded;
+        if (Physics2D.OverlapCircle(new Vector2(groundCheckPoint.position.x, groundCheckPoint.position.y), checkRadius, groundLayer))
             isGrounded = true;
         else
             isGrounded = false;
+
+        if (Physics2D.OverlapCircle(new Vector2(leftWallCheckPoint.position.x, leftWallCheckPoint.position.y), checkRadius, groundLayer) ||
+            Physics2D.OverlapCircle(new Vector2(rightWallCheckPoint.position.x, rightWallCheckPoint.position.y), checkRadius, groundLayer))
+            isWallSliding = true;
+        else
+            isWallSliding = false;
+
+    }
+
+    // Gives the player an extra short period to apply boost from direction change on landing
+    private IEnumerator GroundedDelay()
+    {
+        float elapsedTime = 0;
+        while(elapsedTime < 0.15f)
+        {
+            if (changingDirection)
+            {
+                ChangeDirectionDash();
+                yield break;
+            }
+            yield return null;
+            elapsedTime += Time.deltaTime;
+        }
+    }
+
+    private void ChangeDirectionDash()
+    {
+        rb.velocity += moveDirection * Vector2.right * landForce;
+        GameObject inst;
+        if (transform.rotation.y == 0)
+            inst = Instantiate(dashEffect, groundCheckPoint.transform.position, dashEffect.transform.rotation);
+        else
+            inst = Instantiate(dashEffect, groundCheckPoint.transform.position, Quaternion.Euler(0, 90, 0));
+        inst.transform.parent = transform;
     }
 
     private void Fall()
@@ -105,13 +161,13 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
 
         // Animate the movement
-        if(Mathf.Abs(rb.velocity.x) > 0)
+        if(Mathf.Abs(moveDirection.x) > 0.1f)
             playerAnim.SetBool("running", true);
         else
             playerAnim.SetBool("running", false);
 
         // Add drag to the movement
-        if((!move.inProgress && Mathf.Abs(rb.velocity.x) > 0.1f) || (changingDirection && isGrounded))
+        if(isGrounded && moveDirection.x < 0.1f && moveDirection.x > -0.1f)
         {
             rb.drag = linearDrag;
         }
@@ -120,11 +176,19 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0f;
         }
 
+        // When the player lands add a force on the player towards their movement direction
+        if (isGrounded && !prevGrounded)
+        {
+            if(rb.velocity.x > 0.001f) rb.velocity += new Vector2(Mathf.Abs(rb.velocity.x) / (moveDirection.x * landForce), 0);
+            StartCoroutine(GroundedDelay());
+        }
+
         // Flip the character based on direction
-        if (moveDirection.x >= 0)
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-        else            
-            transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        if (moveDirection.x > 0)
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+         else if(moveDirection.x < 0)
+                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+
 
     }
 
@@ -141,7 +205,9 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Handles.color = Color.green;
-        Handles.DrawWireDisc(groundCheckPoint.position, transform.forward, groundCheckRadius);
+        Handles.DrawWireDisc(groundCheckPoint.position, transform.forward, checkRadius);
+        Handles.DrawWireDisc(leftWallCheckPoint.position, transform.forward, checkRadius);
+        Handles.DrawWireDisc(rightWallCheckPoint.position, transform.forward, checkRadius);
     }
 
 }
