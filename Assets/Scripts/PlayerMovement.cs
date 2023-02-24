@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool isGrounded;
     private bool prevGrounded;
     [SerializeField] private bool isWallSliding;
+    [SerializeField] private bool horMovePressed;
 
     // Checks
     [SerializeField] private Transform groundCheckPoint;
@@ -39,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveDirection;
     private InputAction move;
     private InputAction jump;
-    private InputAction fire;
     private bool changingDirection => (rb.velocity.x > 0f && moveDirection.x < 0f) || (rb.velocity.x < 0f && moveDirection.x > 0f);
 
     // Animation
@@ -52,20 +53,16 @@ public class PlayerMovement : MonoBehaviour
     {
         move = playerActions.Player.Move;
         move.Enable();
+        move.started += OnMove;
 
         jump = playerActions.Player.Jump;
         jump.Enable();
         jump.performed += Jump;
-
-        fire = playerActions.Player.Fire;
-        fire.Enable();
-        fire.performed += Fire;
     }
 
     private void OnDisable()
     {
         move.Disable();
-        fire.Disable();
     }
 
     private void Awake()
@@ -82,17 +79,17 @@ public class PlayerMovement : MonoBehaviour
         CheckGrounded();
     }
 
-    public float drag = 1f;
-    public float sideDragFactor = 0.1f;
-    public float acceleration = 10.0f;
-    private void FixedUpdate()
+    private void OnMove(InputAction.CallbackContext context)
     {
-        float force_x = -drag * transform.InverseTransformDirection(rb.velocity).x;
-        float force_y = -drag / sideDragFactor * rb.velocity.y;
-        rb.AddRelativeForce(new Vector2(force_x, force_y));
- //       if (Input.GetButton("Fire1")) {
- //           rb.AddRelativeForce(new Vector2(rb.mass * acceleration, rb.mass * acceleration));
- //       }
+        if(context.control.name == "a" || context.control.name == "d")
+        {
+            horMovePressed = true;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        horMovePressed = false;
     }
 
     private void CheckGrounded()
@@ -115,9 +112,9 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator GroundedDelay()
     {
         float elapsedTime = 0;
-        while(elapsedTime < 0.15f)
+        while(elapsedTime < 0.2f)
         {
-            if (changingDirection)
+            if (horMovePressed)
             {
                 ChangeDirectionDash();
                 yield break;
@@ -179,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
         // When the player lands add a force on the player towards their movement direction
         if (isGrounded && !prevGrounded)
         {
-            if(rb.velocity.x > 0.001f) rb.velocity += new Vector2(Mathf.Abs(rb.velocity.x) / (moveDirection.x * landForce), 0);
+            if (Mathf.Abs(moveDirection.x) > 0.1f) rb.velocity += new Vector2(Mathf.Clamp(Mathf.Abs(rb.velocity.x), 0.001f, float.PositiveInfinity) / (moveDirection.x * landForce), 0);
             StartCoroutine(GroundedDelay());
         }
 
@@ -197,11 +194,6 @@ public class PlayerMovement : MonoBehaviour
         if (!isGrounded) return;
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
-    private void Fire(InputAction.CallbackContext context)
-    {
-        playerAnim.SetTrigger("shoot");
-    }
-
     private void OnDrawGizmos()
     {
         Handles.color = Color.green;
