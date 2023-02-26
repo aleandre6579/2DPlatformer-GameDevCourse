@@ -48,9 +48,18 @@ public class PlayerShooting : MonoBehaviour
         float xScaledPos = Mathf.Clamp(shootingPoint.localPosition.x + mouseDirection.x / 50, xEyeBounds.x, xEyeBounds.y);
         float yScaledPos = Mathf.Clamp(shootingPoint.localPosition.y + mouseDirection.y / 50, yEyeBounds.x, yEyeBounds.y);
 
-        robotEye.transform.localPosition = new Vector3(xScaledPos, 
-                                                       yScaledPos, 
-                                                       0);
+        if (robotEye.transform.parent.rotation.y == 0) // If player rotation is towards right
+        { 
+            robotEye.transform.localPosition = new Vector3(xScaledPos,
+                                                           yScaledPos,
+                                                           0);
+        }
+        else // If player rotation is towards left
+        { 
+            robotEye.transform.localPosition = new Vector3(-xScaledPos,
+                                                           yScaledPos,
+                                                           0);
+        }
     }
 
 

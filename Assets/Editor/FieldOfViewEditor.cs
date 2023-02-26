@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(DroneManager))]
+[CustomEditor(typeof(DroneMovement))]
 public class FieldOfViewEditor : Editor
 {
     private void OnSceneGUI()
     {
-        DroneManager fov = (DroneManager)target;
+        DroneMovement fov = (DroneMovement)target;
         Handles.color = Color.white;
         Handles.DrawWireArc(fov.transform.position, Vector3.forward, Vector3.right, 360, fov.radius);
 

@@ -8,6 +8,7 @@ public class BulletManager : MonoBehaviour
     public Vector3 direction;
     [SerializeField] float bulletSpeed;
     [SerializeField] float bulletLifespan;
+    public int damage = 1;
 
     private void Start()
     {
