@@ -5,7 +5,7 @@ using UnityEngine;
 public class ButtonManager : MonoBehaviour
 {
 
-
+    [SerializeField] private bool isOnePress;
     private Animator anim;
     private bool isPressed = false;
     [SerializeField] private int collisionCnt = 0;
@@ -52,14 +52,24 @@ public class ButtonManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("Enemy"))
         {
-            collisionCnt++;
-            if (!isPressed)
+            if(!isOnePress)
+            {
+                collisionCnt++;
+                if (!isPressed)
+                    ButtonPressed();
+            }
+            else if(!isPressed)
+            {
                 ButtonPressed();
+            }
         }
 
         else if(collision.CompareTag("PlayerBullet") || collision.CompareTag("EnemyBullet"))
         {
-            ButtonShot();
+            if(!isOnePress)
+                ButtonShot();
+            else if(!isPressed)
+                ButtonPressed();
         }
     }
 
@@ -67,9 +77,12 @@ public class ButtonManager : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("Enemy"))
         {
-            collisionCnt--;
-            if (collisionCnt + shotCnt == 0)
-                ButtonUnpressed();
+            if(!isOnePress)
+            {
+                collisionCnt--;
+                if (collisionCnt + shotCnt == 0)
+                    ButtonUnpressed();
+            }
         }
     }
 }

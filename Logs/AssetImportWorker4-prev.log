@@ -463,3 +463,89 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 946.971208 seconds.
+  path: Assets/Tilesets
+  artifactKey: Guid(942025ed82f9d3c43aa57e4759130288) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Tilesets using Guid(942025ed82f9d3c43aa57e4759130288) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0458ec78b306e8e154b5d0a67d8999f3') in 0.826235 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000135 seconds.
+  path: Assets/Tilesets/GroundTileRule.asset
+  artifactKey: Guid(0393e555d595ee84baada41b4fb5878d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Tilesets/GroundTileRule.asset using Guid(0393e555d595ee84baada41b4fb5878d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8804e249d90bf1b9d7a40d3cf964fd92') in 0.564179 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 206.564891 seconds.
+  path: Assets/Prefabs/Door.prefab
+  artifactKey: Guid(7f44f8fb9d925b2469210c5288407f51) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Door.prefab using Guid(7f44f8fb9d925b2469210c5288407f51) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '74eeb962681fbb582636076310fc876d') in 0.534883 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Prefabs/EnemyDrone.prefab
+  artifactKey: Guid(32d91310e8f56af429b4ce5b38f91631) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/EnemyDrone.prefab using Guid(32d91310e8f56af429b4ce5b38f91631) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6332a6e8137c74ba97664f22020331e0') in 0.063729 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Prefabs/Player.prefab
+  artifactKey: Guid(d920f6527809c2644bc5968bd5fec485) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/Player.prefab using Guid(d920f6527809c2644bc5968bd5fec485) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ae55000923b0809474434d370a2a416') in 0.051215 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013203 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image D:\UnityProjects\2DPlatformer-GameDevCourse\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image D:\UnityProjects\2DPlatformer-GameDevCourse\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 2.45 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  4.697 seconds
+Domain Reload Profiling:
+	ReloadAssembly (4719ms)
+		BeginReloadAssembly (1911ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (381ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (973ms)
+		EndReloadAssembly (2642ms)
+			LoadAssemblies (428ms)
+			RebuildTransferFunctionScriptingTraits (2ms)
+			SetupTypeCache (430ms)
+			ReleaseScriptCaches (7ms)
+			RebuildScriptCaches (82ms)
+			SetupLoadedEditorAssemblies (1650ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (336ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (3ms)
+				BeforeProcessingInitializeOnLoad (109ms)
+				ProcessInitializeOnLoadAttributes (1087ms)
+				ProcessInitializeOnLoadMethodAttributes (110ms)
+				AfterProcessingInitializeOnLoad (4ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (23ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 9.84 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 5899 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 34 unused Assets / (0.8 MB). Loaded Objects now: 6622.
+Memory consumption went from 236.3 MB to 235.5 MB.
+Total: 22.269200 ms (FindLiveObjects: 0.611200 ms CreateObjectMapping: 1.533800 ms MarkObjects: 18.219700 ms  DeleteObjects: 1.902100 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
