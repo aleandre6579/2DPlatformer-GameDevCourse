@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 
 public class PlayerShooting : MonoBehaviour
 {
+    // Audio
+    private AudioSource aSource;
+    [SerializeField] private AudioClip shootSound;
+
     [SerializeField] Camera cam;
     [SerializeField] GameObject robotEye;
     [SerializeField] Transform shootingPoint;
@@ -26,6 +25,7 @@ public class PlayerShooting : MonoBehaviour
     private void Awake()
     {
         playerActions = new PlayerInputActions();
+        aSource= gameObject.AddComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -69,14 +69,9 @@ public class PlayerShooting : MonoBehaviour
 
         Vector3 direction = new Vector3(mousePos.x - robotEye.transform.position.x, mousePos.y - robotEye.transform.position.y, 0);
         bulletInst.GetComponent<BulletManager>().direction = direction;
-
-
+        
+        aSource.PlayOneShot(shootSound, 0.8f);
     }
     
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(robotEye.transform.position, mousePos);
-    }
 
 }

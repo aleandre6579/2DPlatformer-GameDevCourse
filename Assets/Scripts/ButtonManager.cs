@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
 {
+    private AudioSource aSource;
+    [SerializeField] private AudioClip press;
 
     [SerializeField] private bool isOnePress;
     private Animator anim;
@@ -18,10 +20,12 @@ public class ButtonManager : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        aSource = GetComponent<AudioSource>();
     }
 
     private void ButtonPressed()
     {
+        aSource.PlayOneShot(press, 1f);
         anim.SetBool("isPressed", true);
         isPressed = true;
         door.SetActive(false);

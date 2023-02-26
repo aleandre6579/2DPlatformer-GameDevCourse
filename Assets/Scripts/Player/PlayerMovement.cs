@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -12,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 {
     // Components
     private Rigidbody2D rb;
+    private DontDestroy dontDestroy;
+    private PlayerManager playerManager;
 
     // Movement
     [Header("Movement Variables")]
@@ -56,6 +55,13 @@ public class PlayerMovement : MonoBehaviour
     // Particles
     [SerializeField] private GameObject dashEffect;
 
+    // Audio
+    private AudioSource aSource;
+    [SerializeField] private AudioClip boost;
+    [SerializeField] private AudioClip victory;
+    [SerializeField] private AudioClip dash;
+    [SerializeField] private AudioClip jumpSound;
+
     private void OnEnable()
     {
         move = playerActions.Player.Move;
@@ -83,6 +89,9 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerActions = new PlayerInputActions();
         playerAnim = GetComponent<Animator>();
+        aSource = GetComponent<AudioSource>();
+        dontDestroy = GameObject.Find("DontDestroy").GetComponent<DontDestroy>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
     private void Start()
@@ -157,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ChangeDirectionDash()
     {
+        aSource.PlayOneShot(dash, 1f);
         rb.velocity += moveDirection * Vector2.right * landForce;
         GameObject inst;
         if (transform.rotation.y == 0)
@@ -224,6 +234,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isGrounded) return;
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        if(jumpForce == superJumpForce)
+        {
+            aSource.PlayOneShot(boost, 0.2f);
+        }
+        else
+        {
+            aSource.PlayOneShot(jumpSound, 0.3f);
+        }
     }
 
     private void Enter(InputAction.CallbackContext context)
@@ -232,20 +250,15 @@ public class PlayerMovement : MonoBehaviour
         {
             panelAnim.SetBool("fadeIn", true);
             Invoke("NextLevel", 1.2f);
+            aSource.PlayOneShot(victory, 0.5f);
         }
     }
 
     private void NextLevel()
     {
+        dontDestroy.health = playerManager.health;
+        dontDestroy.time = playerManager.currTime;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Handles.color = Color.green;
-        Handles.DrawWireDisc(groundCheckPoint.position, transform.forward, checkRadius);
-        Handles.DrawWireDisc(leftWallCheckPoint.position, transform.forward, checkRadius);
-        Handles.DrawWireDisc(rightWallCheckPoint.position, transform.forward, checkRadius);
     }
 
 }

@@ -11,6 +11,9 @@ public class DroneManager : Enemy
     private DroneMovement droneMovement;
     private Animator anim;
     private Rigidbody2D rb;
+    private AudioSource aSource;
+
+    [SerializeField] private AudioClip droneBreak;
 
     [SerializeField] float deathForce = 5;
 
@@ -26,6 +29,7 @@ public class DroneManager : Enemy
         rb = GetComponent<Rigidbody2D>();
         droneMovement = GetComponent<DroneMovement>();
         anim = GetComponent<Animator>();
+        aSource = GetComponent<AudioSource>();
     }
 
 
@@ -72,6 +76,7 @@ public class DroneManager : Enemy
 
     private void IsDead()
     {
+        aSource.PlayOneShot(droneBreak, 0.1f);
         if(shootRoutine != null) StopCoroutine(shootRoutine);
         anim.SetBool("isDead", true);
         droneMovement.IsDead();

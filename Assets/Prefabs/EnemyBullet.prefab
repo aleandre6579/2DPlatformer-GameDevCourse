@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
-  bulletSpeed: 0.06
+  bulletSpeed: 0.2
   bulletLifespan: 5
   damage: 1
 --- !u!58 &8660884911212776695
