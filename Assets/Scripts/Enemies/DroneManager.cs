@@ -72,6 +72,7 @@ public class DroneManager : Enemy
 
     private void IsDead()
     {
+        StopCoroutine(shootRoutine);
         anim.SetBool("isDead", true);
         droneMovement.IsDead();
         rb.bodyType = RigidbodyType2D.Dynamic;
