@@ -63,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         move.Disable();
+        jump.Disable();
     }
 
     private void Awake()

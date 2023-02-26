@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class BulletManager : MonoBehaviour
@@ -26,4 +27,11 @@ public class BulletManager : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Ground"))
+        {
+            KillBullet();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -50,10 +51,14 @@ public class PlayerManager : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Default");
         playerMovement.enabled = false;
         playerShooting.enabled = false;
-        this.enabled = false;
+        StartCoroutine(Respawn());
     }
 
-
+    private IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
 
 

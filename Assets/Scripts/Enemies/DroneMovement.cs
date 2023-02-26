@@ -155,7 +155,7 @@ public class DroneMovement : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
+                if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
                     canSeePlayer = true;
                 else
                     canSeePlayer = false;
