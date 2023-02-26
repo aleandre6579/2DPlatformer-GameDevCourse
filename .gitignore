@@ -16,3 +16,7 @@ Library/Artifacts/00/004779a5e5d4b92873e9dadcc338dadc
 .vs/2DPlatformer-GameDevCourse/v17/.suo
 *.bin
 *.bin
+Temp/*
+
+# Never ignore Asset meta data
+!Assets/**/*.meta
