@@ -59,6 +59,9 @@
     <Compile Include="Assets\Scripts\PlayerShooting.cs" />
     <Compile Include="Assets\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\BulletManager.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\DroneManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

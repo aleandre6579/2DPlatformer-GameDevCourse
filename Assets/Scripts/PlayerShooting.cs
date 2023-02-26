@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,9 +11,11 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] Camera cam;
     [SerializeField] GameObject robotEye;
     [SerializeField] Transform shootingPoint;
+    [SerializeField] GameObject bulletPref;
 
     // Eye Movement
     private Vector3 mousePos;
+    private Vector3 mouseToEyeDir;
     [SerializeField] Vector2 xEyeBounds;
     [SerializeField] Vector2 yEyeBounds;
 
@@ -40,7 +43,7 @@ public class PlayerShooting : MonoBehaviour
     private void Update()
     {
         mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector3 mouseDirection = mousePos - shootingPoint.localPosition;
+        Vector3 mouseDirection = mousePos - shootingPoint.position;
 
         float xScaledPos = Mathf.Clamp(shootingPoint.localPosition.x + mouseDirection.x / 50, xEyeBounds.x, xEyeBounds.y);
         float yScaledPos = Mathf.Clamp(shootingPoint.localPosition.y + mouseDirection.y / 50, yEyeBounds.x, yEyeBounds.y);
@@ -53,6 +56,18 @@ public class PlayerShooting : MonoBehaviour
 
     private void Shoot(InputAction.CallbackContext context)
     {
-        Debug.Log("Shoot");
+        GameObject bulletInst = Instantiate(bulletPref, robotEye.transform.position, Quaternion.identity);
+
+        Vector3 direction = new Vector3(mousePos.x - robotEye.transform.position.x, mousePos.y - robotEye.transform.position.y, 0);
+        bulletInst.GetComponent<BulletManager>().direction = direction;
+
+
     }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(robotEye.transform.position, mousePos);
+    }
+
 }
