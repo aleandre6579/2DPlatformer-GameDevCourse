@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSpeed;
     [SerializeField] private float linearDrag;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float superJumpForce;
+    private float normalJumpForce;
     [SerializeField] private float landForce;
 
     [SerializeField] private float fallMultiplier = 2.5f;
@@ -28,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private bool prevGrounded;
     [SerializeField] private bool isWallSliding;
     [SerializeField] private bool horMovePressed;
+    public bool atGate = false;
 
     // Checks
     [SerializeField] private Transform groundCheckPoint;
@@ -35,16 +39,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform rightWallCheckPoint;
     [SerializeField] private float checkRadius;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask jumpBlockLayer;
 
     // Inputs
     private PlayerInputActions playerActions;
     private Vector2 moveDirection;
     private InputAction move;
     private InputAction jump;
+    private InputAction enter;
     private bool changingDirection => (rb.velocity.x > 0f && moveDirection.x < 0f) || (rb.velocity.x < 0f && moveDirection.x > 0f);
 
     // Animation
     private Animator playerAnim;
+    [SerializeField] private Animator panelAnim;
 
     // Particles
     [SerializeField] private GameObject dashEffect;
@@ -58,12 +65,17 @@ public class PlayerMovement : MonoBehaviour
         jump = playerActions.Player.Jump;
         jump.Enable();
         jump.performed += Jump;
+
+        enter = playerActions.Player.Enter;
+        enter.Enable();
+        enter.performed += Enter;
     }
 
     private void OnDisable()
     {
         move.Disable();
         jump.Disable();
+        enter.Disable();
     }
 
     private void Awake()
@@ -73,11 +85,29 @@ public class PlayerMovement : MonoBehaviour
         playerAnim = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        normalJumpForce = jumpForce;
+    }
+
     private void Update()
     {
+        CheckJumpBlock();
         Move();
         Fall();
         CheckGrounded();
+    }
+
+    private void CheckJumpBlock()
+    {
+        if (Physics2D.OverlapCircle(new Vector2(groundCheckPoint.position.x, groundCheckPoint.position.y), checkRadius, jumpBlockLayer))
+        {
+            jumpForce = superJumpForce;
+        }
+        else
+        {
+            jumpForce = normalJumpForce;
+        }
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -195,6 +225,21 @@ public class PlayerMovement : MonoBehaviour
         if (!isGrounded) return;
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
+
+    private void Enter(InputAction.CallbackContext context)
+    {
+        if(atGate)
+        {
+            panelAnim.SetBool("fadeIn", true);
+            Invoke("NextLevel", 1.2f);
+        }
+    }
+
+    private void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+    }
+
     private void OnDrawGizmos()
     {
         Handles.color = Color.green;

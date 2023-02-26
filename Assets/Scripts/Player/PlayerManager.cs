@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,6 +31,18 @@ public class PlayerManager : MonoBehaviour
             bullet = collision.gameObject;
             IsHit(bullet.GetComponent<BulletManager>().damage);
         }
+        else if(collision.CompareTag("Gate"))
+        {
+            playerMovement.atGate = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Gate"))
+        {
+            playerMovement.atGate = false;
+        }
     }
 
     private void IsHit(int damage)
@@ -41,7 +54,6 @@ public class PlayerManager : MonoBehaviour
             IsDead();
         }
     }
-
 
     private void IsDead()
     {
@@ -59,7 +71,5 @@ public class PlayerManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-
 
 }

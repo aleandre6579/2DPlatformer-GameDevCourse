@@ -19,7 +19,7 @@ public class DroneManager : Enemy
     [SerializeField] private Transform shootpoint;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float reloadTime;
-    private Coroutine shootRoutine;
+    private Coroutine shootRoutine = null;
 
     private void Awake()
     {
@@ -72,7 +72,7 @@ public class DroneManager : Enemy
 
     private void IsDead()
     {
-        StopCoroutine(shootRoutine);
+        if(shootRoutine != null) StopCoroutine(shootRoutine);
         anim.SetBool("isDead", true);
         droneMovement.IsDead();
         rb.bodyType = RigidbodyType2D.Dynamic;
